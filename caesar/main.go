@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 func main() {
 	var length, delta int
@@ -15,22 +18,11 @@ func main() {
 }
 
 func rotate(s rune, delta int, k []rune) rune {
-	idx := -1
-	for i, r := range k {
-		if r == s {
-			idx = i
-			break
-		}
-	}
+	idx := strings.IndexRune(string(k), s)
 	if idx < 0 {
 		fmt.Printf("Error: could not find the expected symbol %v\n", s)
 		return s
 	}
-	for i := 0; i < delta; i++ {
-		idx++
-		if idx >= len(k) {
-			idx = 0
-		}
-	}
+	idx = (idx + delta) % len(k)
 	return k[idx]
 }
