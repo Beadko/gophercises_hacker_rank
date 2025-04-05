@@ -9,12 +9,23 @@ func main() {
 	var length, delta int
 	var input string
 	fmt.Scanf("%d\n", &length)
+	fmt.Scanf("%s\n", &input)
 	fmt.Scanf("%d\n", &delta)
-	fmt.Scanf("%d\n", &input)
 
-	a := []rune("abcdefghijklmnopqrstuvwxyz")
-	newRune := rotate('m', 2, a)
-	fmt.Println(string(newRune))
+	aL := "abcdefghijklmnopqrstuvwxyz"
+	aU := strings.ToUpper(aL)
+	r := ""
+	for _, c := range input {
+		switch {
+		case strings.IndexRune(aL, c) >= 0:
+			r = r + string(rotate(c, delta, []rune(aL)))
+		case strings.IndexRune(aU, c) >= 0:
+			r = r + string(rotate(c, delta, []rune(aU)))
+		default:
+			r = r + string(c)
+		}
+	}
+	fmt.Println(r)
 }
 
 func rotate(s rune, delta int, k []rune) rune {
