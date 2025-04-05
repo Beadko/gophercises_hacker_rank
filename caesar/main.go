@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"strings"
 )
 
 func main() {
@@ -12,28 +11,25 @@ func main() {
 	fmt.Scanf("%s\n", &input)
 	fmt.Scanf("%d\n", &delta)
 
-	aL := "abcdefghijklmnopqrstuvwxyz"
-	aU := strings.ToUpper(aL)
-	r := ""
+	var r []rune
 	for _, c := range input {
-		switch {
-		case strings.IndexRune(aL, c) >= 0:
-			r = r + string(rotate(c, delta, []rune(aL)))
-		case strings.IndexRune(aU, c) >= 0:
-			r = r + string(rotate(c, delta, []rune(aU)))
-		default:
-			r = r + string(c)
-		}
+		r = append(r, cipher(c, delta))
 	}
-	fmt.Println(r)
+	fmt.Println(string(r))
 }
 
-func rotate(s rune, delta int, k []rune) rune {
-	idx := strings.IndexRune(string(k), s)
-	if idx < 0 {
-		fmt.Printf("Error: could not find the expected symbol %v\n", s)
-		return s
+func cipher(r rune, delta int) rune {
+	if r >= 'A' && r <= 'Z' {
+		return rotate(r, 'A', delta)
 	}
-	idx = (idx + delta) % len(k)
-	return k[idx]
+	if r >= 'a' && r <= 'z' {
+		return rotate(r, 'a', delta)
+	}
+	return r
+}
+
+func rotate(r rune, base, delta int) rune {
+	tmp := int(r) - base
+	tmp = (tmp + delta) % 26
+	return rune(tmp + base)
 }
